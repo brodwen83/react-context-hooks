@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
 import { BookContext } from '../contexts/BookContext';
+import { ADD_BOOK } from '../reducers/bookReducer';
 
 export default function NewBookForm() {
   const [book, setBook] = useState({ title: '', author: '' });
-  const { addBook } = useContext(BookContext);
+  const { dispatch } = useContext(BookContext);
 
   const handleChange = event => {
     const { value, name } = event.target;
@@ -13,7 +13,7 @@ export default function NewBookForm() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    addBook(book.title, book.author);
+    dispatch({ type: ADD_BOOK, book });
     setBook({ title: '', author: '' });
   };
 
@@ -39,7 +39,3 @@ export default function NewBookForm() {
     </form>
   );
 }
-
-NewBookForm.propTypes = {
-  addBook: PropTypes.func
-};
