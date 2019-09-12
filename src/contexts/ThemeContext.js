@@ -1,32 +1,26 @@
-import React, { createContext, Component } from 'react';
+import React, { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 export const ThemeContext = createContext();
 
-class ThemeContextProvider extends Component {
-  state = {
+function ThemeContextProvider({ children }) {
+  const [theme, setTheme] = useState({
     isLightTheme: true,
     light: { syntax: '#555', ui: '#ddd', bg: '#eee' },
     dark: { syntax: '#ddd', ui: '#333', bg: '#555' }
+  });
+
+  const toggleTheme = () => {
+    const { isLightTheme } = theme;
+
+    setTheme({ ...theme, isLightTheme: !isLightTheme });
   };
 
-  toggleTheme = () => {
-    this.setState(prevState => ({
-      isLightTheme: !prevState.isLightTheme
-    }));
-  };
-
-  render() {
-    const { children } = this.props;
-
-    return (
-      <ThemeContext.Provider
-        value={{ ...this.state, toggleTheme: this.toggleTheme }}
-      >
-        {children}
-      </ThemeContext.Provider>
-    );
-  }
+  return (
+    <ThemeContext.Provider value={{ ...theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 ThemeContextProvider.propTypes = {

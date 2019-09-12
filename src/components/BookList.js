@@ -1,21 +1,13 @@
-import React, { useState, useContext } from 'react';
-import uuid from 'uuid/v1';
+import React, { useContext } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
 import NewBookForm from './NewBookForm';
+import { BookContext } from '../contexts/BookContext';
 
 function BookList() {
-  const [books, setBooks] = useState([
-    { title: 'the way of the kings', id: uuid() },
-    { title: 'the name of the wind', id: uuid() },
-    { title: 'the final empire', id: uuid() }
-  ]);
+  const { books, addBook } = useContext(BookContext);
 
   const { isLightTheme, light, dark } = useContext(ThemeContext);
   const theme = isLightTheme ? light : dark;
-
-  const addBook = title => {
-    setBooks([...books, { title, id: uuid() }]);
-  };
 
   return (
     <div
@@ -23,9 +15,9 @@ function BookList() {
       style={{ color: theme.syntax, background: theme.bg }}
     >
       <ul>
-        {books.map(book => (
-          <li style={{ background: theme.ui }} key={book.id}>
-            {book.title}
+        {books.map(({ id, title }) => (
+          <li style={{ background: theme.ui }} key={id}>
+            {title}
           </li>
         ))}
       </ul>
