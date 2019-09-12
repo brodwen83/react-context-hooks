@@ -6,17 +6,21 @@ export const BookContext = createContext();
 
 function BookContextProvider({ children }) {
   const [books, setBooks] = useState([
-    { title: 'the way of the kings', id: uuid() },
-    { title: 'the name of the wind', id: uuid() },
-    { title: 'the final empire', id: uuid() }
+    { title: 'the way of the kings', author: 'patrick rothfuss', id: uuid() },
+    { title: 'the name of the wind', author: 'bandon sanderson', id: uuid() }
   ]);
 
-  const addBook = title => {
-    setBooks([...books, { title, id: uuid() }]);
+  const addBook = (title, author) => {
+    setBooks([...books, { title, author, id: uuid() }]);
+  };
+
+  const removeBook = id => {
+    const booksCopy = books;
+    setBooks(booksCopy.filter(book => book.id !== id));
   };
 
   return (
-    <BookContext.Provider value={{ books, addBook }}>
+    <BookContext.Provider value={{ books, addBook, removeBook }}>
       {children}
     </BookContext.Provider>
   );
